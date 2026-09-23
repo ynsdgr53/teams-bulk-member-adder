@@ -3,7 +3,7 @@
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Arayüz: CustomTkinter](https://img.shields.io/badge/Arayüz-CustomTkinter-indigo.svg)](https://github.com/TomSchimansky/CustomTkinter)
-[![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](https://www.microsoft.com/)
+[![Platform: Windows | Linux](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-blue.svg)](#-hızlı-başlangıç-kaynak-koddan-çalıştırma)
 
 > **Excel (`.xlsx`, `.xls`) ve CSV dosyalarındaki öğrencileri ve üyeleri Microsoft Teams sınıflarına/ekiplerine otomatik olarak ekleyen masaüstü aracı.**
 
@@ -37,7 +37,7 @@ Microsoft Teams'te sınıf veya ekip sahipleri 50-100 kişilik bir e-posta liste
 - **🛡️ Güvenlik ve Acil Durdurma:** Fare imlecini ekranın herhangi bir dış köşesine çekmek işlemi anında durdurur (PyAutoGUI FailSafe).
 - **📋 Pano (Clipboard) Desteği:** E-postaları panodan `Ctrl+V` ile yapıştırdığı için Türkçe veya özel karakterlerde hiçbir tuşlama hatası yaşanmaz.
 - **💾 Dışa Aktarma:** Yüklenen listedeki mailleri tek tıkla `.txt` veya standart `.csv` dosyası olarak kaydedebilme.
-- **📦 Kurulumsuz `.exe` Desteği:** PyInstaller ile tek dosya `.exe` haline getirilebilir; kullanıcıların bilgisayarında Python kurulu olmasına gerek kalmaz.
+- **📦 Çoklu Platform:** Hem Windows hem de Linux işletim sistemlerinde sorunsuz çalışır.
 
 ---
 
@@ -46,7 +46,11 @@ Microsoft Teams'te sınıf veya ekip sahipleri 50-100 kişilik bir e-posta liste
 ### Gereksinimler
 
 - Python 3.10 veya üzeri
-- Windows işletim sistemi (Teams masaüstü uygulaması veya web tarayıcı)
+- **Windows:** Teams masaüstü veya web uygulaması
+- **Linux:** X11 masaüstü ortamı ve şu paketler:
+  ```bash
+  sudo apt update && sudo apt install -y python3-tk xclip
+  ```
 
 ### 1. Depoyu klonlayın
 ```bash
@@ -61,7 +65,11 @@ pip install -r requirements.txt
 
 ### 3. Uygulamayı çalıştırın
 ```bash
+# Windows
 python src/main.py
+
+# Linux
+python3 src/main.py
 ```
 *(Veya Windows'ta doğrudan `run.bat` dosyasına çift tıklayın)*
 

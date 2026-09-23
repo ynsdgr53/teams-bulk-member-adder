@@ -7,8 +7,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: Teams_Bulk_Member_Adder_Windows.exe
+            asset_name: Teams_Bulk_Member_Adder_Windows.exe
+            build_cmd: pyinstaller --onefile --noconsole --name "Teams_Bulk_Member_Adder_Windows" --collect-all customtkinter src/main.py
+            output_path: dist/Teams_Bulk_Member_Adder_Windows.exe
+
+          - os: ubuntu-latest
+            artifact_name: Teams_Bulk_Member_Adder_Linux
+            asset_name: Teams_Bulk_Member_Adder_Linux
+            build_cmd: pyinstaller --onefile --noconsole --name "Teams_Bulk_Member_Adder_Linux" --collect-all customtkinter src/main.py
+            output_path: dist/Teams_Bulk_Member_Adder_Linux
 
     steps:
       - name: Checkout Repository
@@ -20,7 +35,13 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install Dependencies
+      - name: Install Linux System Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk xclip xvfb
+
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -30,20 +51,19 @@ jobs:
         run: |
           python -m unittest discover -s tests
 
-      - name: Build Standalone Executable
-        run: |
-          pyinstaller --onefile --noconsole --name "Teams_Bulk_Member_Adder" --collect-all customtkinter src/main.py
+      - name: Build Executable with PyInstaller
+        run: ${{ matrix.build_cmd }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Teams_Bulk_Member_Adder_Windows
-          path: dist/Teams_Bulk_Member_Adder.exe
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.output_path }}
 
-      - name: Create GitHub Release
+      - name: Create / Update GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/Teams_Bulk_Member_Adder.exe
+          files: ${{ matrix.output_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

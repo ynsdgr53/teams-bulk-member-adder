@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![GUI: CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-indigo.svg)](https://github.com/TomSchimansky/CustomTkinter)
-[![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](https://www.microsoft.com/)
+[![Platform: Windows | Linux](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-blue.svg)](#-quick-start-running-from-source)
 [![i18n: EN | TR | ES | FR | DE](https://img.shields.io/badge/i18n-EN%20%7C%20TR%20%7C%20ES%20%7C%20FR%20%7C%20DE-green.svg)](#-internationalization)
 
 > **Automate bulk student and member enrollment into Microsoft Teams classes and teams directly from Excel (`.xlsx`, `.xls`) and CSV files.**
@@ -47,7 +47,11 @@ In Microsoft Teams, team owners and educators cannot simply copy and paste a lis
 ### Prerequisites
 
 - Python 3.10 or newer
-- Windows OS (Teams desktop application or Teams web)
+- **Windows:** Microsoft Teams Desktop app or Web app
+- **Linux:** X11 desktop environment, plus system packages:
+  ```bash
+  sudo apt update && sudo apt install -y python3-tk xclip
+  ```
 
 ### 1. Clone the repository
 ```bash
@@ -62,7 +66,11 @@ pip install -r requirements.txt
 
 ### 3. Run the application
 ```bash
+# Windows
 python src/main.py
+
+# Linux
+python3 src/main.py
 ```
 *(Or double-click `run.bat` on Windows)*
 

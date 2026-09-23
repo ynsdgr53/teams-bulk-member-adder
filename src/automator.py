@@ -1,13 +1,46 @@
 """
 Teams Automation Engine Module
 Handles clipboard copying, keystroke emulation, timing, and emergency fail-safes.
+Cross-platform compatible (Windows, Linux, macOS).
 """
 
 import time
-import winsound
 import threading
 import pyautogui
 import pyperclip
+
+# Windows-only sound module fallback
+try:
+    import winsound
+except ImportError:
+    winsound = None
+
+def _beep(freq=850, duration=150):
+    """Cross-platform audible beep."""
+    if winsound:
+        try:
+            winsound.Beep(freq, duration)
+            return
+        except Exception:
+            pass
+    # Terminal bell character for Linux/macOS
+    try:
+        print("\a", end="", flush=True)
+    except Exception:
+        pass
+
+def _message_beep():
+    """Cross-platform completion sound."""
+    if winsound:
+        try:
+            winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            return
+        except Exception:
+            pass
+    try:
+        print("\a", end="", flush=True)
+    except Exception:
+        pass
 
 # Enable PyAutoGUI fail-safe: Moving the mouse to any corner stops the automation
 pyautogui.FAILSAFE = True
@@ -58,10 +91,7 @@ class TeamsAutomator:
                 break
             if "on_countdown" in callbacks:
                 callbacks["on_countdown"](sec)
-            try:
-                winsound.Beep(850, 150)
-            except Exception:
-                pass
+            _beep(850, 150)
             time.sleep(1)
 
         if self.stop_requested:
@@ -70,10 +100,7 @@ class TeamsAutomator:
                 callbacks["on_stop"](0, total)
             return
 
-        try:
-            winsound.Beep(1200, 300)
-        except Exception:
-            pass
+        _beep(1200, 300)
 
         success_count = 0
         try:
@@ -100,10 +127,7 @@ class TeamsAutomator:
                 success_count += 1
 
             if not self.stop_requested:
-                try:
-                    winsound.MessageBeep(winsound.MB_ICONASTERISK)
-                except Exception:
-                    pass
+                _message_beep()
                 if "on_complete" in callbacks:
                     callbacks["on_complete"](success_count)
             else:
