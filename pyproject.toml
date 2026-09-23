@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teams-bulk-member-adder"
+version = "1.0.0"
+description = "Automate bulk member and student enrollment into Microsoft Teams from Excel and CSV files."
+readme = "README.md"
+authors = [{ name = "Open Source Community" }]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Education",
+    "Intended Audience :: System Administrators",
+    "Topic :: Utilities"
+]
+dependencies = [
+    "customtkinter>=6.0.0",
+    "openpyxl>=3.1.2",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.8.2",
+    "darkdetect>=0.8.0"
+]
+
+[project.scripts]
+teams-adder = "src.main:main"
